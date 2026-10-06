@@ -158,96 +158,26 @@ Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organiz
 
 # 🟢 Nivel Básico
 
-## 1. Productores por Unidad Operativa
-
+## P1: Volumen Total y Cobertura de Productores
+## CONTEXTO DE NEGOCIO: 
+ La gerencia necesita reportar el volumen total neto acopiado histórico de la Unidad Operativa '090060' y mapear cuántos productores únicos han entregado materia prima.
 ### Pregunta
 
-**¿Cuántos productores activos existen en cada unidad operativa?**
+**¿Cuánto fue el total de acopio durante estos 3 años?**
 
 ### Objetivo
 
-Identificar la distribución de productores y conocer el tamaño de cada unidad operativa.
-
-### Indicadores
-
-- Cantidad de productores.
-- Productores por unidad operativa.
-- Participación porcentual.
-
----
-
-## 2. Representantes Activos
-
-### Pregunta
-
-**¿Cuántos representantes activos existen por unidad operativa?**
-
-### Objetivo
-
-Conocer la distribución de representantes responsables de los productores.
-
-### Indicadores
-
-- Cantidad de representantes.
-- Representantes por unidad operativa.
-- Productores gestionados.
+Conocer el total de hojas de coca durante los años 2024,2025,2026 de la unidad operativa de Kosñipata.
+```sql
+    SELECT 
+    SUM(Kilos) AS TotalKilosHistorico,
+    COUNT(DISTINCT cpID_Productor) AS TotalProductoresUnicos
+    FROM #BaseEntregasTemporal;
+  ``` 
 
 ---
 
-## 3. Kilos por Año
 
-### Pregunta
-
-**¿Cuántos kilos de hojas de coca fueron entregados por cada año entre 2019 y 2026?**
-
-### Objetivo
-
-Identificar la evolución general del volumen de entregas.
-
-### Indicadores
-
-- Kilos totales.
-- Kilos por año.
-- Variación anual.
-- Participación porcentual.
-
----
-
-## 4. Volumen por Unidad Operativa
-
-### Pregunta
-
-**¿Qué unidades operativas concentran la mayor cantidad de kilos?**
-
-### Objetivo
-
-Identificar las unidades operativas con mayor participación en el volumen total.
-
-### Indicadores
-
-- Kilos por unidad operativa.
-- Participación porcentual.
-- Ranking de unidades operativas.
-
----
-
-## 5. Top 10 Productores
-
-### Pregunta
-
-**¿Cuáles son los 10 productores con mayor volumen acumulado durante el período analizado?**
-
-### Objetivo
-
-Identificar los productores con mayor contribución histórica.
-
-### Indicadores
-
-- Kilos acumulados.
-- Ranking.
-- Participación porcentual.
-
----
 
 # 🟡 Nivel Intermedio
 
@@ -302,4 +232,4 @@ Detectar productores cuyo volumen disminuyó considerablemente.
 Una clasificación puede realizarse mediante `CASE WHEN`:
 
 ```sql
-                           
+  ```                         
