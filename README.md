@@ -24,11 +24,10 @@ El análisis se desarrolla utilizando técnicas SQL de diferentes niveles de com
 - Window Functions.
 - `RANK()`.
 - `ROW_NUMBER()`.
-- `LAG()`.
 - Análisis de crecimiento interanual.
 - Rankings.
 - Participación porcentual.
-- Análisis de concentración y Pareto.
+- Análisis de concentración.
 
 ---
 
@@ -151,3 +150,156 @@ Analizar mediante SQL Server el comportamiento histórico de las entregas de hoj
 
 ---
 
+# Preguntas de Negocio
+
+Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organizadas en tres niveles de dificultad.
+
+---
+
+# 🟢 Nivel Básico
+
+## 1. Productores por Unidad Operativa
+
+### Pregunta
+
+**¿Cuántos productores activos existen en cada unidad operativa?**
+
+### Objetivo
+
+Identificar la distribución de productores y conocer el tamaño de cada unidad operativa.
+
+### Indicadores
+
+- Cantidad de productores.
+- Productores por unidad operativa.
+- Participación porcentual.
+
+---
+
+## 2. Representantes Activos
+
+### Pregunta
+
+**¿Cuántos representantes activos existen por unidad operativa?**
+
+### Objetivo
+
+Conocer la distribución de representantes responsables de los productores.
+
+### Indicadores
+
+- Cantidad de representantes.
+- Representantes por unidad operativa.
+- Productores gestionados.
+
+---
+
+## 3. Kilos por Año
+
+### Pregunta
+
+**¿Cuántos kilos de hojas de coca fueron entregados por cada año entre 2019 y 2026?**
+
+### Objetivo
+
+Identificar la evolución general del volumen de entregas.
+
+### Indicadores
+
+- Kilos totales.
+- Kilos por año.
+- Variación anual.
+- Participación porcentual.
+
+---
+
+## 4. Volumen por Unidad Operativa
+
+### Pregunta
+
+**¿Qué unidades operativas concentran la mayor cantidad de kilos?**
+
+### Objetivo
+
+Identificar las unidades operativas con mayor participación en el volumen total.
+
+### Indicadores
+
+- Kilos por unidad operativa.
+- Participación porcentual.
+- Ranking de unidades operativas.
+
+---
+
+## 5. Top 10 Productores
+
+### Pregunta
+
+**¿Cuáles son los 10 productores con mayor volumen acumulado durante el período analizado?**
+
+### Objetivo
+
+Identificar los productores con mayor contribución histórica.
+
+### Indicadores
+
+- Kilos acumulados.
+- Ranking.
+- Participación porcentual.
+
+---
+
+# 🟡 Nivel Intermedio
+
+## 6. Evolución por Unidad Operativa
+
+### Pregunta
+
+**¿Cómo evolucionaron las entregas de cada unidad operativa entre 2019 y 2026?**
+
+### Objetivo
+
+Comparar el comportamiento histórico de las unidades operativas.
+
+### Indicadores
+
+- Kilos por año.
+- Variación interanual.
+- Crecimiento acumulado.
+- Tendencia.
+
+---
+
+## 7. Productores con Crecimiento
+
+### Pregunta
+
+**¿Qué productores presentan crecimiento sostenido en sus entregas?**
+
+### Objetivo
+
+Identificar productores cuyo volumen presenta una tendencia positiva durante el período analizado.
+
+### Indicadores
+
+- Kilos por año.
+- Variación porcentual.
+- Número de períodos con crecimiento.
+- Crecimiento acumulado.
+
+---
+
+## 8. Productores con Reducción
+
+### Pregunta
+
+**¿Qué productores presentan reducciones significativas en sus entregas?**
+
+### Objetivo
+
+Detectar productores cuyo volumen disminuyó considerablemente.
+
+Una clasificación puede realizarse mediante `CASE WHEN`:
+
+```sql
+                           
