@@ -8,7 +8,7 @@ Este proyecto corresponde al reto final de análisis de datos, cuyo objetivo es 
 
 ## Resumen (Overview)
 
-El presente proyecto tiene como objetivo analizar información histórica relacionada con los **productores, representantes, unidades operativas y entregas de hojas de coca de ENACO S.A.**, utilizando **SQL Server** como principal herramienta de análisis.
+El presente proyecto tiene como objetivo analizar información histórica relacionada con los **productores, representantes, unidades operativas y entregas de hojas de coca de ENACO S.A.**, utilizando **SQL Server** dentro de **DATABRISCKS** como principal herramienta de análisis.
 
 A través del procesamiento y análisis de datos correspondientes al período **2019–2026**, se busca identificar patrones de comportamiento, evolución de las entregas, principales productores, representantes con mayor volumen, concentración de las entregas y variaciones significativas a través del tiempo.
 
