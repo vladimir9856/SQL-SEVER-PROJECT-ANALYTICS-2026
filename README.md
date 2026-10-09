@@ -1,8 +1,8 @@
 # SQL-SERVER-PROJECT-ENACO-ANALYTICS-2026
 
-Este proyecto corresponde al reto final de análisis de datos, cuyo objetivo es aplicar conocimientos de SQL, análisis exploratorio y pensamiento analítico orientado al negocio para transformar datos reales en información útil para la toma de decisiones.
+Este proyecto corresponde al reto final de análisis de datos, cuyo objetivo es aplicar conocimientos de SQL aplicados en la  plataforma de DATABRICKS, haciendo el análisis exploratorio y pensamiento analítico orientado al negocio para transformar datos reales en información útil para la toma de decisiones.
 
-![ENACO Analytics](./picture/banner_vertical.png)
+![IMAGEN DE PORTADA](./imagen/P02.png)
 
 # Proyecto SQL: Análisis Comercial y Productivo de Hojas de Coca en ENACO
 
@@ -10,7 +10,7 @@ Este proyecto corresponde al reto final de análisis de datos, cuyo objetivo es 
 
 El presente proyecto tiene como objetivo analizar información histórica relacionada con los **productores, representantes, unidades operativas y entregas de hojas de coca de ENACO S.A.**, utilizando **SQL Server** dentro de **DATABRISCKS** como principal herramienta de análisis.
 
-A través del procesamiento y análisis de datos correspondientes al período **2019–2026**, se busca identificar patrones de comportamiento, evolución de las entregas, principales productores, representantes con mayor volumen, concentración de las entregas y variaciones significativas a través del tiempo.
+A través del procesamiento y análisis de datos correspondientes al período **2024–2026**, se busca identificar patrones de comportamiento, evolución de las entregas, principales productores, representantes con mayor volumen, concentración de las entregas y variaciones significativas a través del tiempo.
 
 El proyecto no se limita únicamente a la elaboración de consultas SQL, sino que busca aplicar un enfoque de **Business Analytics**, partiendo de preguntas de negocio y transformando los datos operativos en **KPIs, hallazgos e insights accionables**.
 
@@ -50,17 +50,13 @@ El análisis se desarrolla utilizando técnicas SQL de diferentes niveles de com
 # 📚 Estructura del Proyecto
 
 - [Sobre los Datos](#sobre-los-datos)
+- [Principales Entidades Analizadas](#principales-entidades-analizadas)
 - [Contexto de Negocio](#contexto-de-negocio)
 - [Objetivos](#objetivos)
 - [Preguntas de Negocio](#preguntas-de-negocio)
 - [Exploración de Datos](#exploración-de-datos)
 - [Limpieza y Validación de Datos](#limpieza-y-validación-de-datos)
 - [Transformación de Datos](#transformación-de-datos)
-- [Análisis SQL](#análisis-sql)
-- [KPIs](#kpis)
-- [Análisis Avanzado](#análisis-avanzado)
-- [Insights de Negocio](#insights-de-negocio)
-- [Resultados Esperados](#resultados-esperados)
 - [Metodología](#metodología)
 - [Conclusiones](#conclusiones)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
@@ -78,29 +74,31 @@ Los datos utilizados en este proyecto corresponden a información operacional re
 - Representantes.
 - Unidades operativas.
 - Ubicación geográfica.
-- Comprobantes de compra.
-- Detalles de las operaciones de compra.
-- Pesos registrados.
+- Base-Sector
+- Entrega mensual de los kilso de hojas de coca.
 - Años de operación.
 
 El período analizado comprende:
 
-**2019 – 2026**
+**2024 – 2026**
 
-La información permite estudiar el comportamiento histórico de las entregas y construir indicadores relacionados con el volumen de hojas de coca adquirido.
+La información permite estudiar el comportamiento histórico de las entregas y construir indicadores relacionados con el volumen de hojas de coca adquirido. Estas estan distribuidas en más de 36500 filas y 18 columnas.
 
-## Principales entidades analizadas
+![IMAGEN DE LA VISTA DE LOS DATOS GENERALES](./imagen/P01.png)
+
+---
+# Principales entidades analizadas
 
 | Entidad | Descripción |
 |---|---|
-| Productor | Persona registrada como productor |
+| Productor | Persona registrada como productor(Títular) |
 | Representante | Representante asociado al productor |
 | Unidad Operativa | Unidad operativa donde se encuentra registrado el productor |
-| Ubigeo | Información geográfica asociada al productor |
-| Comprobante de Compra | Registro de la operación de compra |
-| Ítem de Compra | Detalle de los pesos asociados a la operación |
-| Año | Año correspondiente a la operación |
-| Kilos | Peso convertido utilizado para el análisis |
+| Base | Base a la que pertenece el representante productor |
+| Sector | Sector a la que pertenece el productor |
+| Año | Año correspondiente a la entrega |
+| Mes | Mes correspondiente a la entrega|
+| Kilos Entregados | Peso convertido utilizado para el análisis |
 
 ---
 
@@ -108,7 +106,7 @@ La información permite estudiar el comportamiento histórico de las entregas y 
 
 ENACO S.A. desarrolla actividades relacionadas con el acopio y comercialización de la hoja de coca dentro del marco establecido para esta actividad en el Perú.
 
-La información operacional contiene registros históricos que permiten analizar el comportamiento de las entregas realizadas por productores, así como su relación con representantes y unidades operativas.
+La información operacional contiene registros históricos que permiten analizar el comportamiento de las entregas realizadas por productores, así como su relación con representantes y unidades operativas. (Base-Sector)
 
 El análisis busca proporcionar una perspectiva orientada al negocio para responder preguntas como:
 
@@ -118,10 +116,10 @@ El análisis busca proporcionar una perspectiva orientada al negocio para respon
 - ¿Cómo ha evolucionado el volumen de entregas?
 - ¿Qué productores presentan crecimiento?
 - ¿Qué productores presentan disminución?
-- ¿Existe concentración significativa del volumen?
 - ¿Qué productores presentan comportamientos atípicos?
 - ¿Qué unidades operativas presentan mayor variabilidad?
 - ¿Qué productores tienen una participación relevante dentro del volumen total?
+- - ¿En que estado se encuenta dicha (BASE-SECTOR)?
 
 > **Nota:** Este proyecto tiene fines académicos y de portafolio. Los resultados dependen del conjunto de datos utilizado y no representan necesariamente indicadores oficiales publicados por ENACO S.A.
 
@@ -131,7 +129,7 @@ El análisis busca proporcionar una perspectiva orientada al negocio para respon
 
 ## Objetivo General
 
-Analizar mediante SQL Server el comportamiento histórico de las entregas de hojas de coca realizadas durante el período 2019–2026, con el propósito de identificar patrones, tendencias, concentración de volumen y oportunidades de análisis para la gestión comercial y operativa.
+Analizar mediante SQL Server el comportamiento histórico de las entregas de hojas de coca realizadas durante el período 2024–2026, con el propósito de identificar patrones, tendencias, concentración de volumen y oportunidades de análisis para la gestión comercial y operativa.
 
 ## Objetivos Específicos
 
