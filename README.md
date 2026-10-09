@@ -162,6 +162,10 @@ Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organiz
     FROM #BaseEntregasTemporal;
   ``` 
 
+Análisis de la consulta: Se utilizan las funciones SUM() y COUNT(DISTINCT) para calcular el volumen total de kilos entregados y la cantidad de productores únicos registrados en el conjunto de datos.
+
+Interpretación: El resultado permite dimensionar el volumen histórico de acopio y el universo de productores que participan en la actividad durante el período analizado.
+
 ![CAPTURA DEL RESULTADO DE LA PRIMERA PREGUNTA](./imagen/P03.png)
 
 ## **PREGUNTA NRO 2: ¿Cuanto volumen captó cada regione geográfica(ubigeo) para priorizar esfuerzos logísticos y de transporte. Y por cuantos productores estan conformados cada una de estas regiones?**
@@ -179,6 +183,11 @@ Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organiz
   ``` 
 ![CAPTURA DEL RESULTADO DE LA PRIMERA PREGUNTA](./imagen/P04.png)
 
+
+Análisis de la consulta: Se agrupan los registros por UbigeoDescripcion y se calculan los kilos acumulados y la cantidad de productores únicos por región, ordenando los resultados de mayor a menor volumen.
+
+Interpretación: Los resultados permiten identificar las regiones que concentran mayores volúmenes de acopio y comparar su participación en relación con la cantidad de productores registrados.
+
 ## **PREGUNTA NRO3: ¿Cómo evoluciona la cantidad de productores activos año a año en cada sede operativa?**
 
 ### Solución
@@ -195,6 +204,8 @@ GROUP BY UnidadOperativa, Anio
 ORDER BY UnidadOperativa, Anio ASC;
 
   ``` 
+
+  
 ![PREGUNTA NRO 3](./imagen/P05.png)
 
 
