@@ -54,13 +54,8 @@ El análisis se desarrolla utilizando técnicas SQL de diferentes niveles de com
 - [Contexto de Negocio](#contexto-de-negocio)
 - [Objetivos](#objetivos)
 - [Preguntas de Negocio](#preguntas-de-negocio)
-- [Exploración de Datos](#exploración-de-datos)
-- [Limpieza y Validación de Datos](#limpieza-y-validación-de-datos)
-- [Transformación de Datos](#transformación-de-datos)
-- [Metodología](#metodología)
 - [Conclusiones](#conclusiones)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
-- [Competencias Demostradas](#competencias-demostradas)
 - [Estructura del Repositorio](#estructura-del-repositorio)
 - [Autor](#autor)
 
@@ -317,21 +312,39 @@ Insight de Negocio: Este análisis eleva la perspectiva de control de un nivel o
 
 Acciones Recomendadas para la Alta Gerencia de ENACO S.A.
 
-- Intervención Inmediata en Tupac Amaru (Foco 2027):
+-  Intervención Inmediata en Tupac Amaru (Foco 2027):
 Declarar el sector de Tupac Amaru en estado de atención prioritaria. Se debe desplegar un censo de campo para el primer trimestre del próximo periodo para entender por qué 1,366 productores empadronados están entregando volúmenes mínimos o nulos.
 ---
 
-## 8. Productores con Reducción
 
-### Pregunta
 
-**¿Qué productores presentan reducciones significativas en sus entregas?**
+### **PREGUNTA NRO8:¿Cómo se distribuyen los productores según su nivel de entregas de hojas de coca (verde, amarillo y rojo) por representante durante el año 2026 en el sector Túpac Amaru, y cómo evoluciona la acumulación de productores con bajo nivel de entregas?**
 
-### Objetivo
+### solucion
+```SQL
 
-Detectar productores cuyo volumen disminuyó considerablemente.
+SELECT 
+    cpID_RepresProductor,
+    Anio,
+    SUM(CASE WHEN KilosEntregados > 80.5 THEN 1 ELSE 0 END) AS productores_verde,
+    SUM(CASE WHEN KilosEntregados BETWEEN 57.5 AND 80.5 THEN 1 ELSE 0 END) AS productores_amarillo,
+    SUM(CASE WHEN KilosEntregados < 57.5 THEN 1 ELSE 0 END) AS productores_rojo,
+    SUM(SUM(CASE WHEN KilosEntregados < 57.5 THEN 1 ELSE 0 END)) OVER (PARTITION BY cpID_RepresProductor ORDER BY Anio) AS acumulado_rojos
+FROM bd_productores.default.data_productores_representantes_2024_2025_2026
+WHERE Anio = 2026 AND SectorDescripcion = 'TUPAC AMARU'
 
-Una clasificación puede realizarse mediante `CASE WHEN`:
+  ```
+![PREGUNTA NRO 7](./imagen/P09.png)
+Presenta un lsitado general de la distribucion de las entregas por tipo (semaforizacion) en donde las productores en rojo predomina.
 
-```sql
-  ```                         
+## CONCLUSIONES
+- Análisis temporal: Se estructuró el análisis de entregas entre 2024 y 2026 para evaluar tendencias mensuales e interanuales, considerando que 2026 contiene información parcial hasta el 9 de octubre.
+- Agregación geográfica: Se segmentaron los volúmenes de acopio por unidad operativa y sector para facilitar la comparación territorial y la identificación de concentraciones de entregas.
+Ranking de productores: Se aplicaron funciones de agregación y ordenamiento para identificar a los productores con mayor contribución al volumen total de kilos entregados.
+- Análisis por representante: Se evaluó la distribución de entregas por representante, considerando la relación de múltiples representantes con un mismo productor como una dimensión relevante para evitar duplicidades.
+- Clasificación por umbrales: Se implementó una segmentación condicional de los niveles de entrega mediante CASE WHEN, clasificando los registros en categorías verde, amarillo y rojo según los umbrales definidos.
+- Análisis acumulativo: Se utilizaron funciones de ventana para calcular acumulados por período y representante, permitiendo examinar la evolución de los indicadores entre años.
+- Calidad de datos: Se identificó la importancia de validar la granularidad de los registros, las relaciones entre entidades y los posibles duplicados antes de calcular indicadores de productores y representantes.
+- Aplicación de SQL analítico: Se integraron consultas con agregaciones, subconsultas, CTE y funciones de ventana para convertir datos operativos en indicadores orientados al análisis y la toma de decisiones.
+
+(LA FUENTE DE DATOS FUERON SACADOS DE LA ENACO SAC.)
