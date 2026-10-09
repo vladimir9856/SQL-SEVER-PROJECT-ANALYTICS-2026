@@ -346,7 +346,9 @@ WHERE Anio = 2026 AND SectorDescripcion = 'TUPAC AMARU'
 
   ```
 ![PREGUNTA NRO 7](./imagen/P09.png)
-Presenta un lsitado general de la distribucion de las entregas por tipo (semaforizacion) en donde las productores en rojo predomina.
+Análisis de la consulta: Se utilizan agregaciones condicionales con SUM(CASE WHEN ...) para clasificar los registros en verde, amarillo y rojo por representante. La función de ventana pretende calcular el acumulado de registros en rojo por representante a lo largo de los años.
+
+Interpretación: La distribución permite comparar los niveles de entrega asociados a cada representante dentro del sector Túpac Amaru e identificar dónde se concentra la mayor cantidad de registros clasificados en rojo.
 
 ## CONCLUSIONES
 - Análisis temporal: Se estructuró el análisis de entregas entre 2024 y 2026 para evaluar tendencias mensuales e interanuales, considerando que 2026 contiene información parcial hasta el 9 de octubre.
