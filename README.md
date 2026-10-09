@@ -156,11 +156,7 @@ Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organiz
 
 # 🟢 Nivel Básico
 
-## P1: Volumen Total y Cobertura de Productores
-
-### Pregunta
-
-**¿Cuánto fue el total de acopio durante estos 3 años de los unicos productores y mapear cuántos productores únicos han entregado materia prima  ?**
+## **Pregunta nro 1: ¿Cuánto fue el total de acopio durante estos 3 años de los unicos productores y mapear cuántos productores únicos han entregado materia prima  ?**
 
 ### Solución
 
@@ -173,50 +169,156 @@ Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organiz
 
 ![CAPTURA DEL RESULTADO DE LA PRIMERA PREGUNTA](./imagen/P03.png)
 
+## **PREGUNTA NRO 2: ¿Cuanto volumen captó cada regione geográfica(ubigeo) para priorizar esfuerzos logísticos y de transporte. Y por cuantos productores estan conformados cada una de estas regiones?**
 
+### Solución
+
+```SQL
+    SELECT 
+    UbigeoDescripcion,
+    SUM(KilosEntregados) AS KilosAcopiados,
+    COUNT(DISTINCT cpID_Productor) AS ProductoresEnZona
+    FROM `bd_productores`.`default`.`data_productores_representantes_2024_2025_2026`
+    GROUP BY UbigeoDescripcion
+    ORDER BY KilosAcopiados DESC;
+  ``` 
+![CAPTURA DEL RESULTADO DE LA PRIMERA PREGUNTA](./imagen/P04.png)
+
+## **PREGUNTA NRO3: ¿Cómo evoluciona la cantidad de productores activos año a año en cada sede operativa?**
+
+### Solución
+
+
+```SQL
+-- Productores activos por Unidad Operativa y Año --
+SELECT 
+    UnidadOperativa, 
+    Anio, 
+    COUNT(DISTINCT cpID_Productor) AS productores_activos
+FROM `bd_productores`.`default`.`data_productores_representantes_2024_2025_2026`
+GROUP BY UnidadOperativa, Anio
+ORDER BY UnidadOperativa, Anio ASC;
+
+  ``` 
+![PREGUNTA NRO 3](./imagen/P05.png)
+
+
+Insight de Negocio: Permite mapear la retención y la fidelidad del agricultor legal en las agencias de ENACO. Si una unidad operativa muestra una caída drástica de productores de un año a otro, evidencia un problema regional: migración de cultivos, impacto de plagas, o un incremento del atractivo económico del mercado informal en esa zona específica.
+En ese caso cada año tiene la misma dantidad de productores.
+
+## **PREGUNTA NRO4: ¿Quiénes son los 10 productores de mayor impacto por volumen acopiado en el último periodo fiscal (2026)?**
+
+### Solución
+
+
+```SQL
+-- Top 10 productores por volumen anual (2026) --
+SELECT 
+    cpID_Productor, 
+    SUM(KilosEntregados) AS total_kilos
+FROM `bd_productores`.`default`.`data_productores_representantes_2024_2025_2026`
+WHERE Anio = 2026
+GROUP BY cpID_Productor
+ORDER BY total_kilos DESC
+LIMIT 10;
+
+  ``` 
+![PREGUNTA NRO 6](./imagen/P06.png)
+
+
+Insight de Negocio: Con este resultado no ayudaría a crear programas de incentivos técnicos (abonos, herramientas o asistencia técnica preferencial) dirigidos exclusivamente a estos 10 productores estratégicos para asegurar su permanencia en el padrón formal.
 
 ---
-
-
-
 # 🟡 Nivel Intermedio
 
-## 6. Evolución por Unidad Operativa
+## **PREGUNTA NRO 5 :¿Cuántos productores se encuentran en estado Rojo (entregas < 57.5 kilos) por sector y por año (2024, 2025, 2026)?”**
 
-### Pregunta
+### Solución
 
-**¿Cómo evolucionaron las entregas de cada unidad operativa entre 2019 y 2026?**
 
-### Objetivo
+```SQL
+SELECT 
+    anio,
+    sectordescripcion,
+    COUNT(*) AS productores_rojo
+FROM (
+    SELECT 
+        cpID_Productor,
+        SectorDescripcion,
+        Anio,
+        CASE 
+            WHEN KilosEntregados > 80.5 THEN 'Verde'
+            WHEN KilosEntregados >= 57.5 THEN 'Amarillo'
+            ELSE 'Rojo'
+        END AS semaforo
+    FROM `bd_productores`.`default`.`data_productores_representantes_2024_2025_2026`
+) t
+WHERE semaforo = 'Rojo'
+  AND Anio IN (2024, 2025, 2026)
+GROUP BY anio, sectordescripcion
+ORDER BY anio, sectordescripcion;
 
-Comparar el comportamiento histórico de las unidades operativas.
 
-### Indicadores
+  ``` 
+![PREGUNTA NRO 7](./imagen/P07.png)
 
-- Kilos por año.
-- Variación interanual.
-- Crecimiento acumulado.
-- Tendencia.
+
+- Clasificación semafórica: Aplica la regla de negocio para determinar el estado de cada productor según sus kilos entregados.
+
+- Filtro de riesgo: Se enfoca únicamente en los productores que no alcanzan el mínimo esperado (Rojo).
+
+- Segmentación temporal y sectorial: Permite ver la evolución anual y comparar entre sectores.
+
+
 
 ---
 
-## 7. Productores con Crecimiento
+## **PREGUNTA NRO 7:¿Cuál es el sector geográfico que registró la mayor concentración de productores en nivel crítico ("Rojo") en cada año?**
 
-### Pregunta
 
-**¿Qué productores presentan crecimiento sostenido en sus entregas?**
+### Solución
+```SQL
 
-### Objetivo
+-- Sector con mayor volumen acumulado de productores en alerta crítica (Rojo) por año --
+WITH AlertaSectoresAnual AS (
+    SELECT 
+        Anio, 
+        SectorDescripcion,
+        COUNT(*) AS total_productores_rojo,
+        ROW_NUMBER() OVER(
+            PARTITION BY Anio 
+            ORDER BY COUNT(*) DESC
+        ) AS ranking_anual_maximo
+    FROM (
+        SELECT cpID_Productor, SectorDescripcion, Anio,
+               CASE 
+                   WHEN KilosEntregados > 80.5 THEN 'Verde'
+                   WHEN KilosEntregados >= 57.5 THEN 'Amarillo'
+                   ELSE 'Rojo'
+               END AS semaforo
+        FROM bd_productores.default.data_productores_representantes_2024_2025_2026
+    ) t
+    WHERE semaforo = 'Rojo'
+    GROUP BY Anio, SectorDescripcion
+)
+SELECT 
+    Anio, 
+    SectorDescripcion AS SectorCriticoMaximoAnual, 
+    total_productores_rojo
+FROM AlertaSectoresAnual
+WHERE ranking_anual_maximo = 1
+ORDER BY Anio ASC;
 
-Identificar productores cuyo volumen presenta una tendencia positiva durante el período analizado.
+  ``` 
+![PREGUNTA NRO 7](./imagen/P08.png)
 
-### Indicadores
+Insight de Negocio: Este análisis eleva la perspectiva de control de un nivel operativo (mensual) a uno estratégico (anual). Identificar qué sector lidera las alertas rojas a nivel anual permite a la alta dirección de ENACO S.A. 
 
-- Kilos por año.
-- Variación porcentual.
-- Número de períodos con crecimiento.
-- Crecimiento acumulado.
 
+Acciones Recomendadas para la Alta Gerencia de ENACO S.A.
+
+- Intervención Inmediata en Tupac Amaru (Foco 2027):
+Declarar el sector de Tupac Amaru en estado de atención prioritaria. Se debe desplegar un censo de campo para el primer trimestre del próximo periodo para entender por qué 1,366 productores empadronados están entregando volúmenes mínimos o nulos.
 ---
 
 ## 8. Productores con Reducción
