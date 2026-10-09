@@ -119,7 +119,7 @@ El análisis busca proporcionar una perspectiva orientada al negocio para respon
 - ¿Qué productores presentan comportamientos atípicos?
 - ¿Qué unidades operativas presentan mayor variabilidad?
 - ¿Qué productores tienen una participación relevante dentro del volumen total?
-- - ¿En que estado se encuenta dicha (BASE-SECTOR)?
+- ¿En que estado se encuentra dicha (BASE-SECTOR)?
 
 > **Nota:** Este proyecto tiene fines académicos y de portafolio. Los resultados dependen del conjunto de datos utilizado y no representan necesariamente indicadores oficiales publicados por ENACO S.A.
 
@@ -157,21 +157,23 @@ Para desarrollar el análisis se plantearon **15 preguntas de negocio**, organiz
 # 🟢 Nivel Básico
 
 ## P1: Volumen Total y Cobertura de Productores
-## CONTEXTO DE NEGOCIO: 
- La gerencia necesita reportar el volumen total neto acopiado histórico de la Unidad Operativa '090060' y mapear cuántos productores únicos han entregado materia prima.
+
 ### Pregunta
 
-**¿Cuánto fue el total de acopio durante estos 3 años?**
+**¿Cuánto fue el total de acopio durante estos 3 años de los unicos productores y mapear cuántos productores únicos han entregado materia prima  ?**
 
-### Objetivo
+### Solución
 
-Conocer el total de hojas de coca durante los años 2024,2025,2026 de la unidad operativa de Kosñipata.
-```sql
+```SQL
     SELECT 
     SUM(Kilos) AS TotalKilosHistorico,
     COUNT(DISTINCT cpID_Productor) AS TotalProductoresUnicos
     FROM #BaseEntregasTemporal;
   ``` 
+
+![CAPTURA DEL RESULTADO DE LA PRIMERA PREGUNTA](./imagen/P03.png)
+
+
 
 ---
 
