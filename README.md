@@ -31,7 +31,7 @@ El análisis se desarrolla utilizando técnicas SQL de diferentes niveles de com
 
 ---
 
-## 📩 Si quieres aprender SQL, conéctate conmigo
+<!-- ## 📩 Si quieres aprender SQL, conéctate conmigo -->
 
 <p align="center">
 
